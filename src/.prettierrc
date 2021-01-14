@@ -1,0 +1,6 @@
+{
+  "jsxSingleQuote": true,
+  "singleQuote": true,
+  "arrowParens": "avoid",
+  "trailingComma": "none"
+}

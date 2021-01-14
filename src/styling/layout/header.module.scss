@@ -1,0 +1,74 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.header {
+  width: 100%;
+  height: $header_height;
+
+  background-color: $dark;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+  position: fixed;
+  top: 0;
+  z-index: 10;
+
+  @include flex_center(row, center, space-between);
+
+  a {
+    @include link();
+    margin: 0 15px;
+
+    &:first-child {
+      margin-left: 4%;
+    }
+
+    &:last-child {
+      color: $dark;
+      background-color: $light;
+      padding: 6px 10px;
+      border-radius: 5px;
+    }
+  }
+
+  overflow: hidden;
+
+  .authSection {
+    margin-right: 4%;
+    @include flex_center(row, center, space-between);
+  }
+}
+
+.logo {
+  height: $logo_height;
+  position: absolute;
+  top: 10px;
+  left: calc(50vw - 80px);
+  object-fit: cover;
+  animation: wiggle 10s infinite;
+
+  // &:hover {
+  //   animation: wiggle 1.25s infinite;
+  // }
+
+  @media (max-width: $tablet) {
+    display: none;
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+  85% {
+    transform: rotate(5deg);
+  }
+  95% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

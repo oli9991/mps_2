@@ -1,0 +1,13 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.container {
+  @include flex_center(row, top, flex-start);
+  flex-flow: row wrap;
+
+  min-height: $min_page_h;
+  width: 90%;
+  padding: 30px;
+
+  z-index: 1;
+}

@@ -1,0 +1,12 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.content {
+  background-color: transparent;
+  padding-top: $header_height;
+  background-color: $dark;
+
+  font-family: $primary_font;
+  width: 100%;
+  @include flex_center(row, center, center);
+}

@@ -1,0 +1,43 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.container {
+  @include flex_center(row, top, space-between);
+
+  min-height: calc(2 * #{$min_page_h});
+  width: 90%;
+}
+
+.group {
+  padding-top: 7%;
+  text-align: left;
+
+  font-family: $secondary_font;
+  font-size: 4.75em;
+
+  @media (max-width: $tablet) {
+    font-size: 2.75em;
+  }
+
+  @media (max-width: $phone) {
+    font-size: 1.75em;
+  }
+
+  position: fixed;
+  z-index: 3;
+
+  a {
+    @include link();
+    color: $dark;
+  }
+}
+.welcome {
+}
+
+.burger {
+  padding-top: 7%;
+  position: fixed;
+  right: 40px;
+
+  z-index: 20;
+}

@@ -1,0 +1,10 @@
+@import './variables/theme.scss';
+
+.App {
+  text-align: center;
+  height: 100vh;
+  width: 100%;
+  background-color: $dark;
+  color: $light;
+  font-family: $primary_font;
+}

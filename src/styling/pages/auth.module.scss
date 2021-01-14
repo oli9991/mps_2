@@ -1,0 +1,27 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.container {
+  @include flex_center(column, center, center);
+
+  min-height: $min_page_h;
+  width: 90%;
+
+  form {
+    @include flex_center(column, center, center);
+    min-width: 20%;
+    margin-bottom: 35px;
+  }
+
+  input {
+    width: 100%;
+    font-size: 1.2em;
+    color: $light;
+  }
+
+  button {
+    min-width: calc(20% + 20px);
+    font-size: 1.2em;
+    color: $dark;
+  }
+}

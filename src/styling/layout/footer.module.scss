@@ -1,0 +1,12 @@
+@import '../variables/theme.scss';
+@import '../mixins/mixins.scss';
+
+.footer {
+  width: 100%;
+  height: $footer_height;
+
+  background-color: $dark;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px -5px 15px 0px;
+
+  @include flex_center(row, center, center);
+}
