@@ -28,7 +28,11 @@
 
   a {
     @include link();
-    color: $dark;
+    color: $dark !important;
+  }
+
+  button {
+    font-size: 0.2em;
   }
 }
 .welcome {

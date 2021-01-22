@@ -17,17 +17,6 @@
   a {
     @include link();
     margin: 0 15px;
-
-    &:first-child {
-      margin-left: 4%;
-    }
-
-    &:last-child {
-      color: $dark;
-      background-color: $light;
-      padding: 6px 10px;
-      border-radius: 5px;
-    }
   }
 
   overflow: hidden;
@@ -35,6 +24,36 @@
   .authSection {
     margin-right: 4%;
     @include flex_center(row, center, space-between);
+
+    p {
+      font-size: 1.2em;
+      margin: 0;
+      font-family: $primary_font;
+    }
+
+    a {
+      &:last-child {
+        color: $dark;
+        background-color: $light;
+        padding: 6px 10px;
+        border-radius: 5px;
+      }
+    }
+
+    button {
+      @include link();
+      padding: 5px 15px;
+      color: $dark;
+      margin: 0 10px;
+
+      &:hover {
+        color: $dark;
+      }
+    }
+  }
+  .pages {
+    @include flex_center(row, center, space-between);
+    margin-left: 4%;
   }
 }
 

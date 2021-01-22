@@ -9,19 +9,42 @@
 
   form {
     @include flex_center(column, center, center);
-    min-width: 20%;
+    min-width: 25%;
     margin-bottom: 35px;
-  }
 
-  input {
-    width: 100%;
-    font-size: 1.2em;
-    color: $light;
-  }
+    input,
+    select {
+      width: 100%;
+      font-size: 1.2em;
+      color: $light;
+    }
 
+    select {
+      min-height: 40px;
+    }
+
+    .option {
+      background-color: $light !important;
+      color: $dark !important;
+      padding: 5px;
+      border-radius: 5px !important;
+      border: none;
+      outline: none;
+    }
+  }
   button {
-    min-width: calc(20% + 20px);
+    min-width: 25%;
     font-size: 1.2em;
     color: $dark;
+  }
+
+  p {
+    &:last-child {
+      color: red;
+      opacity: 0.8;
+      font-size: 1em;
+      text-align: left;
+      width: 100%;
+    }
   }
 }
