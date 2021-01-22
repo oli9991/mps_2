@@ -1,23 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../custom_components/card';
 import Layout from '../layout/layout';
 import styles from '../../styling/pages/reservations.module.scss';
+import { getAllReservations } from '../../requests/function';
+import _ from 'underscore';
 
 const Reservations = () => {
-  const reservation = {
-    id: 1,
-    capacity: 4,
-    placement: 'afara',
-    state: 'libera'
-  };
+  const [reservations, setReservations] = useState([]);
+
+  useEffect(() => {
+    getAllReservations(data => setReservations(data));
+  }, []);
+
   return (
     <Layout>
       <div className={styles.container}>
-        <Card {...reservation} />
-        <Card {...reservation} />
-        <Card {...reservation} />
-        <Card {...reservation} />
-        <Card {...reservation} />
+        {!_.isEmpty(reservations) &&
+          reservations.map(reservation => <Card onlyView {...reservation} />)}
       </div>
     </Layout>
   );

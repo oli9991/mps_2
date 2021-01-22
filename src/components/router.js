@@ -14,6 +14,7 @@ const Router = () => {
         <Route component={Auth} path='/register' />
         <Route component={Reservations} path='/reservations' />
         <Route component={SelfReservations} path='/self' />
+        <Route component={SelfReservations} path='/tables' />
       </Switch>
     </BrowserRouter>
   );

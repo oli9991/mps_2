@@ -13,8 +13,17 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.pages}>
-        <Link to='/reservations'>Rezervări</Link>
-        {!_.isNull(state.token) && <Link to='/self'>Rezervările mele</Link>}
+        {!_.isNull(state.token) &&
+          state.user &&
+          state.user.role === 'admin' && (
+            <Link to='/reservations'>Rezervări</Link>
+          )}
+        {!_.isNull(state.token) && <Link to='/tables'>Mese</Link>}
+        {!_.isNull(state.token) &&
+          state.user &&
+          state.user.role !== 'admin' && (
+            <Link to='/self'>Rezervările mele</Link>
+          )}
       </div>
       <Link to='/'>
         <img className={styles.logo} alt='logo' src={assets.logo}></img>

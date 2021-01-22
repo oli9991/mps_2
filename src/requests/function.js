@@ -2,7 +2,8 @@ import axios from 'axios';
 import { openNotification } from '../components/custom_components/notification';
 import { actions } from '../context/context';
 import { getToken } from '../utils/localData';
-import { route, auth_routes } from './routes';
+import { checkIfOld } from '../utils/utils';
+import { route, auth_routes, resource_routes } from './routes';
 
 const error = () =>
   openNotification(
@@ -53,9 +54,34 @@ const register = (
     .then(() => callback && callback())
     .catch(() => error());
 };
+
 /** reservations and resources related routes **/
-const getAllReservations = () => null;
+const getAllReservations = callback =>
+  axios.get(route(resource_routes.all)).then(({ data }) => callback(data));
 
-// const logout = () =>
+const getReservation = (id, callback) =>
+  axios.get(route(resource_routes.byId(id))).then(({ data }) => callback(data));
 
-export { login, register, refreshToken, getUser, getAllReservations };
+const getResource = (id, callback) =>
+  axios
+    .get(route(resource_routes.resource(id)))
+    .then(({ data }) => callback && callback(data));
+
+const updateFinished = (reservation, callback) => {
+  checkIfOld(reservation) &&
+    axios
+      .put(route(resource_routes.update), { ...reservation, finished: true })
+      .then(() => callback && callback())
+      .catch(() => error());
+};
+
+export {
+  login,
+  register,
+  refreshToken,
+  getUser,
+  getAllReservations,
+  updateFinished,
+  getReservation,
+  getResource
+};
