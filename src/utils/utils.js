@@ -1,5 +1,3 @@
-import { getResource } from '../requests/function';
-
 const checkIfOld = reservation => new Date(reservation.end) >= new Date();
 
 const prettyDate = date => {

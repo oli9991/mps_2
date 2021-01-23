@@ -5,7 +5,8 @@ import {
   reserve,
   subscribe,
   unsubscribe,
-  getUser
+  getUser,
+  getAllResources
 } from '../../requests/function';
 import CustomButton from './button';
 import CustomInput from './input';
@@ -19,6 +20,7 @@ import { updateReservations } from '../../redux/reservations';
 import { useDispatch } from 'react-redux';
 import Context from '../../context/context';
 import { calculateNotifications, checkIfSubscribed } from '../../utils/utils';
+import { updateResources } from '../../redux/resources';
 
 const Card = props => {
   const resource = props;
@@ -57,9 +59,14 @@ const Card = props => {
         'Rezervare',
         'Rezervarea a fost înregistrată cu succes'
       );
+      getAllResources(data => dispatch(updateResources(data)));
       getReservationsForUser(state.user.userId, data => {
         dispatch(updateReservations(data));
       });
+      setReason('');
+      setDay(null);
+      setStartHour(null);
+      setEndHour(null);
     });
   };
 

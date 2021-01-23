@@ -1,6 +1,6 @@
 const initialState = {
   modalOpened: false,
-  notifications: []
+  notifications: 0
 };
 
 export default function notifications(state = initialState, action) {
@@ -15,4 +15,7 @@ export default function notifications(state = initialState, action) {
 }
 
 export const setModal = payload => ({ type: 'setModal', payload });
-export const setNotifications = payload => ({ type: 'setModal', payload });
+export const setNotifications = payload => ({
+  type: 'setNotifications',
+  payload
+});

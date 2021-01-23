@@ -8,10 +8,10 @@ import { fullName } from '../../utils/localData';
 import CustomButton from '../custom_components/button';
 import { Badge } from 'antd';
 import { BsFillBellFill } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { setModal } from '../../redux/notifications';
 
-const Header = () => {
+const Header = props => {
   const { state, dispatch } = useContext(Context);
   const dispath = useDispatch();
 
@@ -44,7 +44,7 @@ const Header = () => {
         {!_.isNull(state.token) && (
           <>
             <Badge
-              count={2}
+              count={props.notifications}
               style={{ right: '20px', backgroundColor: '#2c2c2c' }}
             >
               <BsFillBellFill
@@ -62,5 +62,7 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;
+const mapStateToProps = store => ({
+  notifications: store.notifications.notifications
+});
+export default connect(mapStateToProps)(Header);

@@ -35,8 +35,8 @@ const ReservationHistory = props => {
       {<h3>Rezervări trecute</h3>}
       {_.isEmpty(past) && <h4>Nu există înregistrări cu rezervări trecute.</h4>}
       {!_.isEmpty(past) &&
-        past.map(reservation => (
-          <p>
+        past.map((reservation, id) => (
+          <p key={id}>
             {prettyDate(reservation.start)},{' '}
             {moment(reservation.start).format('HH:mm')} -{' '}
             {moment(reservation.end).format('HH:mm')}
@@ -47,8 +47,8 @@ const ReservationHistory = props => {
         <h4>Nu există înregistrări cu rezervări curente.</h4>
       )}
       {!_.isEmpty(current) &&
-        current.map(reservation => (
-          <p>
+        current.map((reservation, id) => (
+          <p key={id}>
             {prettyDate(reservation.start)},{' '}
             {moment(reservation.start).format('HH:mm')} -{' '}
             {moment(reservation.end).format('HH:mm')}
@@ -59,8 +59,8 @@ const ReservationHistory = props => {
         <h4>Nu există înregistrări cu rezervări viitoare.</h4>
       )}
       {!_.isEmpty(future) &&
-        future.map(reservation => (
-          <p>
+        future.map((reservation, id) => (
+          <p key={id}>
             {prettyDate(reservation.start)},{' '}
             {moment(reservation.start).format('HH:mm')} -{' '}
             {moment(reservation.end).format('HH:mm')}
