@@ -8,3 +8,59 @@
   color: $light;
   font-family: $primary_font;
 }
+
+.ant-picker {
+  margin: 4px 8px;
+  background: transparent;
+  color: #2c2c2c !important;
+  width: 89%;
+  height: 35px;
+
+  input {
+    border: none;
+  }
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid #2c2c2c !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: #2c2c2c !important;
+}
+
+.ant-picker-focused,
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: #2c2c2c !important;
+}
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: #eeeeee;
+}
+
+.ant-picker-today-btn,
+.ant-picker-now-btn,
+.ant-btn-primary {
+  color: #eeeeee !important;
+  background-color: #2c2c2c !important;
+  background: #2c2c2c !important;
+  border-color: #2c2c2c !important;
+  padding: 2px;
+  box-shadow: none !important;
+}
+.ant-picker-header-view,
+.ant-picker-header-view:hover,
+.ant-picker-year-btn {
+  color: #2c2c2c !important;
+}
+
+.ant-picker-focused {
+  box-shadow: none;
+}
+
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: grey;
+}

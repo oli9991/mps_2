@@ -6,9 +6,14 @@ import Context, { actions } from '../../context/context';
 import _ from 'underscore';
 import { fullName } from '../../utils/localData';
 import CustomButton from '../custom_components/button';
+import { Badge } from 'antd';
+import { BsFillBellFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
+import { setModal } from '../../redux/notifications';
 
 const Header = () => {
   const { state, dispatch } = useContext(Context);
+  const dispath = useDispatch();
 
   return (
     <div className={styles.header}>
@@ -38,6 +43,15 @@ const Header = () => {
         )}
         {!_.isNull(state.token) && (
           <>
+            <Badge
+              count={2}
+              style={{ right: '20px', backgroundColor: '#2c2c2c' }}
+            >
+              <BsFillBellFill
+                onClick={() => dispath(setModal(true))}
+                style={{ cursor: 'pointer' }}
+              />
+            </Badge>
             <p>{fullName(state.user)}</p>
             <CustomButton onClick={() => dispatch({ type: actions.logout })}>
               Ieșire

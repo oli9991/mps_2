@@ -9,6 +9,8 @@ import { login, register } from '../../requests/function';
 import _ from 'underscore';
 import { Redirect } from 'react-router-dom';
 import CustomSelect from '../custom_components/custom_select';
+import eating from '../../assets/eating.svg';
+import Loading from '../custom_components/loading_screen';
 
 const Auth = props => {
   const [email, setUser] = useState('');
@@ -16,11 +18,10 @@ const Auth = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('user');
+  const [submitted, setSubmitted] = useState(true);
 
   const location = window.location.pathname;
   const page = location && location === '/login' ? 'login' : 'register';
-
-  console.log(page);
 
   const { state, dispatch } = useContext(Context);
 
@@ -54,14 +55,15 @@ const Auth = props => {
       );
       return;
     }
-
-    login(email, password, dispatch, () =>
+    setSubmitted(false);
+    login(email, password, dispatch, () => {
       openNotification(
         'success',
         'Autentificare',
         'Veți fi redirecționat către pagina principală!'
-      )
-    );
+      );
+      setSubmitted(true);
+    });
   };
 
   const handleRegister = () => {
@@ -105,12 +107,14 @@ const Auth = props => {
       );
       return;
     }
+    setSubmitted(false);
     register(email, firstName, lastName, password, role, () => {
       openNotification(
         'success',
         'Înregistrare cu succes',
         'Veți fi redirecționat către pagina de autentificare!'
       );
+      setSubmitted(true);
       props.history.push('/login');
     });
   };
@@ -121,7 +125,9 @@ const Auth = props => {
 
   return (
     <Layout>
+      {submitted === false && <Loading />}
       <div className={styles.container}>
+        <img src={eating} alt='table' />
         <form>
           {page === 'register' && (
             <CustomInput

@@ -4,6 +4,7 @@ import Auth from './pages/auth';
 import Home from './pages/home';
 import Reservations from './pages/reservations';
 import SelfReservations from './pages/self_reservations';
+import Tables from './pages/tables';
 
 const Router = () => {
   return (
@@ -14,7 +15,7 @@ const Router = () => {
         <Route component={Auth} path='/register' />
         <Route component={Reservations} path='/reservations' />
         <Route component={SelfReservations} path='/self' />
-        <Route component={SelfReservations} path='/tables' />
+        <Route component={Tables} path='/tables' />
       </Switch>
     </BrowserRouter>
   );

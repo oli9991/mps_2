@@ -13,8 +13,6 @@ export const interceptors = {
           config.headers['Authorization'] = 'Bearer ' + token;
         }
 
-        console.log(token);
-
         return config;
       },
       error => {

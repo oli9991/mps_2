@@ -10,4 +10,17 @@
   padding: 30px;
 
   z-index: 1;
+
+  .attention {
+    text-align: left;
+    width: 100%;
+    color: rgb(255, 185, 128);
+    font-size: 1em;
+    letter-spacing: 0.8px;
+
+    span {
+      margin-right: 5px;
+      color: red;
+    }
+  }
 }

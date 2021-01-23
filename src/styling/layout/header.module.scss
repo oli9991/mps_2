@@ -22,6 +22,15 @@
   overflow: hidden;
 
   .authSection {
+    svg {
+      color: $light;
+      margin-right: 20px;
+      font-size: 2em !important;
+    }
+    .ant-badge-count {
+      right: 20px !important;
+    }
+
     margin-right: 4%;
     @include flex_center(row, center, space-between);
 

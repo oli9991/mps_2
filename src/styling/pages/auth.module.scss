@@ -2,12 +2,23 @@
 @import '../mixins/mixins.scss';
 
 .container {
+  position: relative;
+
+  img {
+    position: absolute;
+    // left: 10px;
+    z-index: 1;
+    top: 0;
+    width: 90%;
+  }
+
   @include flex_center(column, center, center);
 
   min-height: $min_page_h;
   width: 90%;
 
   form {
+    z-index: 2;
     @include flex_center(column, center, center);
     min-width: 25%;
     margin-bottom: 35px;
@@ -36,6 +47,7 @@
     min-width: 25%;
     font-size: 1.2em;
     color: $dark;
+    z-index: 10;
   }
 
   p {

@@ -2,6 +2,7 @@
 @import '../mixins/mixins.scss';
 
 .content {
+  position: relative;
   background-color: transparent;
   padding-top: $header_height;
   background-color: $dark;

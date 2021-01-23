@@ -6,6 +6,9 @@ import { interceptors } from './requests/interceptors';
 import Context, { actions, initialState, reducer } from './context/context';
 import { getUser } from './requests/function';
 import { getToken } from './utils/localData';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import Notifications from './components/custom_components/notifications';
 
 function App() {
   interceptors.setupInterceptors();
@@ -19,9 +22,12 @@ function App() {
 
   return (
     <Context.Provider value={{ state, dispatch }}>
-      <div className='App'>
-        <Router />
-      </div>
+      <Provider store={store}>
+        <div className='App'>
+          <Notifications />
+          <Router />
+        </div>
+      </Provider>
     </Context.Provider>
   );
 }

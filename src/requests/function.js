@@ -2,8 +2,12 @@ import axios from 'axios';
 import { openNotification } from '../components/custom_components/notification';
 import { actions } from '../context/context';
 import { getToken } from '../utils/localData';
-import { checkIfOld } from '../utils/utils';
-import { route, auth_routes, resource_routes } from './routes';
+import {
+  route,
+  auth_routes,
+  resource_routes,
+  subscription_routes
+} from './routes';
 
 const error = () =>
   openNotification(
@@ -59,20 +63,64 @@ const register = (
 const getAllReservations = callback =>
   axios.get(route(resource_routes.all)).then(({ data }) => callback(data));
 
+const getAllResources = callback =>
+  axios
+    .get(route(resource_routes.getResources))
+    .then(({ data }) => callback(data));
+
 const getReservation = (id, callback) =>
   axios.get(route(resource_routes.byId(id))).then(({ data }) => callback(data));
+
+const getReservationsForUser = (id, callback) =>
+  axios
+    .get(route(resource_routes.forUser(id)))
+    .then(({ data }) => callback(data));
 
 const getResource = (id, callback) =>
   axios
     .get(route(resource_routes.resource(id)))
     .then(({ data }) => callback && callback(data));
 
-const updateFinished = (reservation, callback) => {
-  checkIfOld(reservation) &&
-    axios
-      .put(route(resource_routes.update), { ...reservation, finished: true })
-      .then(() => callback && callback())
-      .catch(() => error());
+const reserve = (resourceId, reason, start, end, callback) => {
+  axios
+    .post(route(resource_routes.add), { resourceId, reason, end, start })
+    .then(() => {
+      callback && callback();
+    })
+    .catch(() => error());
+};
+
+// const updateFinished = (reservation, callback) => {
+//   checkIfOld(reservation) &&
+//     axios
+//       .put(route(resource_routes.update), { ...reservation, finished: true })
+//       .then(() => callback && callback())
+//       .catch(() => error());
+// };
+
+const cancelReservation = (id, callback) =>
+  axios
+    .delete(route(resource_routes.cancelReservation(id)))
+    .then(() => callback && callback())
+    .catch(() => error());
+
+/*subcribtion related requests */
+const subscribe = (resourceId, callback) => {
+  axios
+    .put(route(subscription_routes.subscribe(resourceId)))
+    .then(() => {
+      callback && callback();
+    })
+    .catch(() => error());
+};
+
+const unsubscribe = (resourceId, callback) => {
+  axios
+    .put(route(subscription_routes.unsubscribe(resourceId)))
+    .then(() => {
+      callback && callback();
+    })
+    .catch(() => error());
 };
 
 export {
@@ -81,7 +129,13 @@ export {
   refreshToken,
   getUser,
   getAllReservations,
-  updateFinished,
+  // updateFinished,
   getReservation,
-  getResource
+  getResource,
+  getAllResources,
+  getReservationsForUser,
+  reserve,
+  cancelReservation,
+  subscribe,
+  unsubscribe
 };

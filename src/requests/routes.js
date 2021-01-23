@@ -1,4 +1,4 @@
-const tunel = 'http://81a3eb9a4957.ngrok.io';
+const tunel = 'http://f719647c78a5.ngrok.io';
 
 const auth_routes = {
   login: '/loginUser',
@@ -11,14 +11,15 @@ const resource_routes = {
   update: '/updateResource',
   all: '/reservations',
   byId: id => `/reservations/${id}`,
-  forUser: id => `/reservations/user/${id}`,
+  forUser: id => `/reservations/users/${id}`,
   add: '/addReservation',
-  resource: id => `/resources/${id}`
+  resource: id => `/resources/${id}`,
+  cancelReservation: id => `/deleteReservation/${id}`
 };
 
 const subscription_routes = {
-  subscribe: '/subscribe',
-  unsubscribe: '/unsubscribe'
+  subscribe: id => `/subscribe/${id}`,
+  unsubscribe: id => `/unsubscribe/${id}`
 };
 
 const route = type => tunel + type;
