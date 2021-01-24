@@ -12,11 +12,13 @@ const Notifications = props => {
   const dispatch = useDispatch();
   const { state } = useContext(Context);
   const [availableTables, setAvailable] = useState(0);
+  const [availabilities, setAv] = useState([]);
 
   const [conclusions, setConclusions] = useState(new Map());
 
   useEffect(() => {
     setConclusions(new Map());
+    setAv([]);
     setAvailable(0);
 
     state.user &&
@@ -26,22 +28,25 @@ const Notifications = props => {
           props.resources.forEach(resource => {
             resource.resourceId === id &&
               !_.isEmpty(resource.reserved) &&
-              props.resources.forEach(reservation => {
+              resource.reserved.forEach(reservation => {
                 setConclusions(
                   conclusions.set(resource.resourceId, {
                     ...resource,
-                    availability: false
+                    availability: true
                   })
                 );
+                setAvailable(state.user.subscribed.length);
+
                 if (
-                  moment(reservation.start).isAfter(moment()) &&
-                  moment().isAfter(moment(reservation.end))
+                  moment(reservation.start).isBefore(moment()) &&
+                  moment().isAfter(moment(reservation.start)) &&
+                  moment(reservation.end).isAfter(moment())
                 ) {
-                  setAvailable(a => (a = a + 1));
+                  setAvailable(a => (a = a - 1));
                   setConclusions(
                     conclusions.set(resource.resourceId, {
                       ...resource,
-                      availability: true
+                      availability: false
                     })
                   );
                 }
@@ -50,14 +55,15 @@ const Notifications = props => {
       });
 
     dispatch(setNotifications(availableTables));
-  }, [props.resources, state.user, availableTables, dispatch]);
-
-  console.log(
+    conclusions.forEach(value => setAv(a => a.concat([value])));
+    // eslint-disable-next-line
+  }, [
     props.resources,
-    state.user && state.user.subscribed,
+    state.user,
     availableTables,
-    conclusions
-  );
+    dispatch,
+    props.reservations
+  ]);
 
   return (
     <CustomModal
@@ -76,23 +82,19 @@ const Notifications = props => {
       </p>
 
       <div>
-        {conclusions.forEach((value, _) => {
-          if (value.availability === false) {
-            return (
-              <div key={value.resourceId}>
-                <p style={{ fontWeight: 'bold' }}>{value.name}</p>
-                <p>Această masă este momentan rezervată.</p>
-              </div>
-            );
-          } else {
-            return (
-              <div key={value.resourceId}>
-                <p style={{ fontWeight: 'bold' }}>{value.name}</p>
-                <p>Această masă este liberă.</p>
-              </div>
-            );
-          }
-        })}
+        {availabilities.map((value, _) =>
+          value.availability === false ? (
+            <div key={value.resourceId}>
+              <p style={{ fontWeight: 'bold' }}>{value.name}</p>
+              <p>Această masă este momentan rezervată.</p>
+            </div>
+          ) : (
+            <div key={value.resourceId}>
+              <p style={{ fontWeight: 'bold' }}>{value.name}</p>
+              <p>Această masă este liberă.</p>
+            </div>
+          )
+        )}
       </div>
     </CustomModal>
   );
@@ -100,7 +102,8 @@ const Notifications = props => {
 
 const mapStateToProps = store => ({
   notifications: store.notifications,
-  resources: store.resources
+  resources: store.resources,
+  reservations: store.reservations
 });
 export default connect(mapStateToProps)(Notifications);
 

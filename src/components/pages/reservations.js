@@ -16,7 +16,9 @@ const Reservations = () => {
     <Layout>
       <div className={styles.container}>
         {!_.isEmpty(reservations) &&
-          reservations.map(reservation => <Card onlyView {...reservation} />)}
+          reservations.map(reservation => (
+            <Card key={reservation.reservationId} onlyView {...reservation} />
+          ))}
       </div>
     </Layout>
   );
