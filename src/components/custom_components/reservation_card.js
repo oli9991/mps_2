@@ -91,7 +91,9 @@ const ReservationCard = props => {
                 {moment(props.end).format('HH:mm')}
               </p>
             </Group>
-            <CustomButton onClick={cancel}>Anuleaza Rezervarea</CustomButton>
+            {!props.viewOnly && (
+              <CustomButton onClick={cancel}>Anuleaza Rezervarea</CustomButton>
+            )}
           </Vertical>
         </>
       )}
@@ -105,7 +107,6 @@ const Container = styled.div`
   border: none;
   outline: none;
   box-shadow: rgba(255, 255, 255, 0.1) 2.4px 2.4px 3.2px;
-  height: 250px;
 
   background-color: rgba(93.3%, 93.3%, 93.3%, 0.25);
   color: $2c2c2c;
@@ -114,6 +115,9 @@ const Container = styled.div`
   padding: 10px;
   margin-right: 70px;
   margin-bottom: 200px;
+  height: 250px;
+
+  // min-width: 180px;
 
   font-weight: normal;
 

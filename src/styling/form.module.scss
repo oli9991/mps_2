@@ -1,12 +1,7 @@
-@import '../variables/theme.scss';
-@import '../mixins/mixins.scss';
+@import './variables/theme.scss';
+@import './mixins/mixins.scss';
 
 .container {
-  h3 {
-    color: $light;
-    text-align: left;
-    width: 100%;
-  }
   position: relative;
 
   img {

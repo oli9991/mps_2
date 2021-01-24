@@ -158,44 +158,51 @@ const Card = props => {
                 <CustomButton onClick={() => setIsModalVisible(true)}>
                   Istoric
                 </CustomButton>
-                <CustomButton
-                  onClick={!subscribed ? subscribeTo : unsubscribeTo}
-                >
-                  {!subscribed ? 'Abonare' : 'Dezabonare'}
-                </CustomButton>
+                {state.user && state.user.role !== 'admin' && (
+                  <CustomButton
+                    onClick={!subscribed ? subscribeTo : unsubscribeTo}
+                  >
+                    {!subscribed ? 'Abonare' : 'Dezabonare'}
+                  </CustomButton>
+                )}
               </Horizontal>
             </Group>
           </Vertical>
-
-          <OuterContainer>
-            {resource && (
-              <>
-                <p>Detalii rezervare</p>
-                <DatePicker
-                  value={day}
-                  onChange={value => setDay(value)}
-                  placeholder='Alege ziua'
-                />
-                <TimePicker
-                  value={startHour}
-                  onChange={value => setStartHour(value)}
-                  placeholder='Alege ora inceput'
-                />
-                <TimePicker
-                  value={endHour}
-                  onChange={value => setEndHour(value)}
-                  placeholder='Alege ora sfarsit '
-                />
-                <CustomInput
-                  type='input'
-                  placeholder={'Motiv'}
-                  value={reason}
-                  onChange={e => setReason(e.target.value)}
-                />
-                {<CustomButton onClick={sendReservation}>Rezervă</CustomButton>}
-              </>
-            )}
-          </OuterContainer>
+          {state.user && state.user.role !== 'admin' && (
+            <OuterContainer>
+              {resource && (
+                <>
+                  <p>Detalii rezervare</p>
+                  <DatePicker
+                    value={day}
+                    onChange={value => setDay(value)}
+                    placeholder='Alege ziua'
+                  />
+                  <TimePicker
+                    value={startHour}
+                    onChange={value => setStartHour(value)}
+                    placeholder='Alege ora inceput'
+                  />
+                  <TimePicker
+                    value={endHour}
+                    onChange={value => setEndHour(value)}
+                    placeholder='Alege ora sfarsit '
+                  />
+                  <CustomInput
+                    type='input'
+                    placeholder={'Motiv'}
+                    value={reason}
+                    onChange={e => setReason(e.target.value)}
+                  />
+                  {
+                    <CustomButton onClick={sendReservation}>
+                      Rezervă
+                    </CustomButton>
+                  }
+                </>
+              )}
+            </OuterContainer>
+          )}
         </>
       )}
     </Container>

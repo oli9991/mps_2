@@ -2,9 +2,6 @@
 @import '../mixins/mixins.scss';
 
 .container {
-  @include flex_center(row, top, flex-start);
-  flex-flow: row wrap;
-
   min-height: $min_page_h;
   width: 90%;
   padding: 30px;
@@ -13,14 +10,24 @@
 
   .attention {
     text-align: left;
-    width: 100%;
+    width: 80%;
     color: rgb(255, 185, 128);
     font-size: 1em;
     letter-spacing: 0.8px;
+    // position: absolute;
 
     span {
       margin-right: 5px;
       color: red;
     }
+  }
+
+  .list {
+    width: 100%;
+    @include flex_center(row, top, flex-start);
+    flex-flow: row wrap;
+    min-height: $min_page_h;
+    width: 90%;
+    // padding: 30px;
   }
 }

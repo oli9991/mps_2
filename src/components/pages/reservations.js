@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Card from '../custom_components/card';
 import Layout from '../layout/layout';
 import styles from '../../styling/pages/reservations.module.scss';
 import { getAllReservations } from '../../requests/function';
 import _ from 'underscore';
+import ReservationCard from '../custom_components/reservation_card';
 
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
@@ -17,7 +17,7 @@ const Reservations = () => {
       <div className={styles.container}>
         {!_.isEmpty(reservations) &&
           reservations.map(reservation => (
-            <Card key={reservation.reservationId} onlyView {...reservation} />
+            <ReservationCard key={reservation.reservationId} {...reservation} />
           ))}
       </div>
     </Layout>

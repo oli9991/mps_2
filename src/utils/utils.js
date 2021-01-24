@@ -2,8 +2,8 @@ const checkIfOld = reservation => new Date(reservation.end) >= new Date();
 
 const prettyDate = date => {
   if (date) {
-    const obj = new Date(date);
-    const month = getMonth(date);
+    const obj = new Date(date.split(' ')[0]);
+    const month = getMonth(date.split(' ')[0]);
     const day = obj.getDate();
     const year = obj.getFullYear();
 

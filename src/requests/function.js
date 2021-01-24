@@ -97,6 +97,14 @@ const reserve = (resourceId, reason, start, end, callback) => {
 //       .then(() => callback && callback())
 //       .catch(() => error());
 // };
+const addResource = (name, description, capacity, callback) => {
+  axios
+    .post(route(resource_routes.add), { name, description, capacity })
+    .then(() => {
+      getAllResources();
+      callback && callback();
+    });
+};
 
 const cancelReservation = (id, callback) =>
   axios
@@ -134,6 +142,7 @@ export {
   getResource,
   getAllResources,
   getReservationsForUser,
+  addResource,
   reserve,
   cancelReservation,
   subscribe,

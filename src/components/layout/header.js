@@ -23,6 +23,9 @@ const Header = props => {
           state.user.role === 'admin' && (
             <Link to='/reservations'>Rezervări</Link>
           )}
+        {!_.isNull(state.token) &&
+          state.user &&
+          state.user.role === 'admin' && <Link to='/new'>Adăugare masă</Link>}
         {!_.isNull(state.token) && <Link to='/tables'>Mese</Link>}
         {!_.isNull(state.token) &&
           state.user &&
@@ -43,15 +46,17 @@ const Header = props => {
         )}
         {!_.isNull(state.token) && (
           <>
-            <Badge
-              count={props.notifications}
-              style={{ right: '20px', backgroundColor: '#2c2c2c' }}
-            >
-              <BsFillBellFill
-                onClick={() => dispath(setModal(true))}
-                style={{ cursor: 'pointer' }}
-              />
-            </Badge>
+            {state.user && state.user.role !== 'admin' && (
+              <Badge
+                count={props.notifications}
+                style={{ right: '20px', backgroundColor: '#2c2c2c' }}
+              >
+                <BsFillBellFill
+                  onClick={() => dispath(setModal(true))}
+                  style={{ cursor: 'pointer' }}
+                />
+              </Badge>
+            )}
             <p>{fullName(state.user)}</p>
             <CustomButton onClick={() => dispatch({ type: actions.logout })}>
               Ieșire

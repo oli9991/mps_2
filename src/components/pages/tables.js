@@ -29,10 +29,12 @@ const Tables = ({ tables }) => {
           disponibil, va rugăm abonați-va astfel încât să fiți notificat dacă
           masă va fi eliberată în acel interval.
         </p>
-        {!_.isEmpty(tables) &&
-          tables.map(reservation => (
-            <Card key={reservation.reservationId} {...reservation} />
-          ))}
+        <div className={styles.list}>
+          {!_.isEmpty(tables) &&
+            tables.map(reservation => (
+              <Card key={reservation.reservationId} {...reservation} />
+            ))}
+        </div>
       </div>
     </Layout>
   );

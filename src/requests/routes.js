@@ -1,4 +1,4 @@
-const tunel = 'http://fd833e013181.ngrok.io';
+const tunel = 'http://ef3b5615da93.ngrok.io';
 
 const auth_routes = {
   login: '/loginUser',

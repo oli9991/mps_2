@@ -25,7 +25,7 @@ const Home = () => {
             <br /> vă așteaptă!
           </div>
           {offset > window.innerHeight / 2 && (
-            <Link to='/reservations'>
+            <Link to='/tables'>
               <CustomButton>Rezervă acum o masă </CustomButton>
             </Link>
           )}
