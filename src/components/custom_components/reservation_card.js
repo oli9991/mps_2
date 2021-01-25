@@ -104,10 +104,12 @@ const ReservationCard = props => {
                 <a href={`mailto:${props.user.email}`}>{props.user.email}</a>
               </Group>
             )}
-            <Group>
-              <p>Motiv</p>
-              <p>{props.reason}</p>
-            </Group>
+            {props.reason && (
+              <Group>
+                <p>Motiv</p>
+                <p>{props.reason}</p>
+              </Group>
+            )}
             <Group>
               <p>Dată</p>
               <p>{prettyDate(props.start)}</p>
@@ -143,7 +145,7 @@ const Container = styled.div`
   padding: 10px;
   margin-right: 70px;
   margin-bottom: 20px;
-  height: ${props => (props.admin ? '325px' : '300px')};
+  height: ${props => (props.admin ? '350px' : '300px')};
 
   width: 25%;
 

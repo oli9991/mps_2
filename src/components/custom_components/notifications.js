@@ -65,7 +65,6 @@ const Notifications = props => {
       }
     }
 
-    dispatch(setNotifications(availableTables));
     conclusions.forEach(value => setAv(a => a.concat([value])));
   }, [availableTables, conclusions, dispatch, props.resources, state.user]);
 
@@ -75,6 +74,7 @@ const Notifications = props => {
     setAvailable(0);
 
     calculateAvailabilty();
+    dispatch(setNotifications(availableTables));
     // eslint-disable-next-line
   }, [
     props.resources,
