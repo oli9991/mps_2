@@ -28,7 +28,7 @@ import { updateResources } from '../../redux/resources';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
 const Card = props => {
-  const resource = props;
+  const { resource } = props;
   const [day, setDay] = useState(null);
   const [startHour, setStartHour] = useState(null);
   const [endHour, setEndHour] = useState(null);
@@ -79,7 +79,7 @@ const Card = props => {
   };
 
   const subscribeTo = () => {
-    subscribe(props.resourceId, () => {
+    subscribe(resource.resourceId, () => {
       openNotification(
         'success',
         'Abonare',
@@ -91,7 +91,7 @@ const Card = props => {
   };
 
   const unsubscribeTo = () => {
-    unsubscribe(props.resourceId, () => {
+    unsubscribe(resource.resourceId, () => {
       openNotification(
         'success',
         'Abonare',
@@ -103,14 +103,14 @@ const Card = props => {
   };
 
   const calcultateAvailability = useCallback(() => {
-    if (_.isEmpty(props.reservations)) {
+    if (_.isEmpty(resource.reservations)) {
       setAvailable(true);
       return;
     }
-    if (!_.isEmpty(props.reservations)) {
-      props.reservations.forEach(reservation => {
+    if (!_.isEmpty(resource.reservations)) {
+      resource.reservations.forEach(reservation => {
         if (
-          reservation.resourceId === props.resourceId &&
+          reservation.resourceId === resource.resourceId &&
           moment(reservation.start).isBefore(moment()) &&
           moment().isAfter(moment(reservation.start)) &&
           moment(reservation.end).isAfter(moment())
@@ -123,17 +123,17 @@ const Card = props => {
       return;
     }
     // eslint-disable-next-line
-  }, [props.reservations]);
+  }, [resource.reservations]);
 
   useEffect(() => {
     calcultateAvailability();
     // eslint-disable-next-line
-  }, [props.reservations]);
+  }, [resource.reservations]);
 
   return (
     <Container>
       <ReservationHistory
-        history={props.reservations}
+        history={resource.reservations}
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
       />

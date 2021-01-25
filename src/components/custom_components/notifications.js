@@ -34,7 +34,6 @@ const Notifications = props => {
                       moment().isAfter(moment(reservation.start)) &&
                       moment(reservation.end).isAfter(moment())
                     ) {
-                      setAvailable(a => (a = a - 1));
                       setConclusions(conclusions =>
                         conclusions.set(resource.resourceId, {
                           ...resource,
@@ -65,8 +64,20 @@ const Notifications = props => {
       }
     }
 
-    conclusions.forEach(value => setAv(a => a.concat([value])));
+    conclusions.forEach(value => {
+      setAv(a => a.concat([value]));
+    });
   }, [availableTables, conclusions, dispatch, props.resources, state.user]);
+
+  useEffect(() => {
+    let count = 0;
+    conclusions.forEach(value => {
+      if (value.availability === true) {
+        count++;
+      }
+    });
+    setAvailable(count);
+  }, [conclusions]);
 
   useEffect(() => {
     setConclusions(new Map());
@@ -76,13 +87,7 @@ const Notifications = props => {
     calculateAvailabilty();
     dispatch(setNotifications(availableTables));
     // eslint-disable-next-line
-  }, [
-    props.resources,
-    state.user,
-    availableTables,
-    dispatch,
-    props.reservations
-  ]);
+  }, [props.resources, state.user, dispatch, props.reservations]);
 
   return (
     <CustomModal

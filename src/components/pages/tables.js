@@ -35,8 +35,8 @@ const Tables = ({ tables }) => {
         )}
         <div className={styles.list}>
           {!_.isEmpty(tables) &&
-            tables.map(reservation => (
-              <Card key={reservation.reservationId} {...reservation} />
+            tables.map(resource => (
+              <Card key={resource.resourceId} resource={resource} />
             ))}
         </div>
       </div>
