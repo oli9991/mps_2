@@ -5,6 +5,7 @@ import {
   reserve,
   subscribe,
   unsubscribe,
+  deleteResource,
   getUser,
   getAllResources
 } from '../../requests/function';
@@ -60,7 +61,7 @@ const Card = props => {
       'HH:mm:ss'
     )}`;
 
-    reserve(props.resourceId, reason, start, end, () => {
+    reserve(resource.resourceId, reason, start, end, () => {
       openNotification(
         'success',
         'Rezervare',
@@ -99,6 +100,16 @@ const Card = props => {
       );
       getUser(dispatchContext);
       calculateNotifications(state.user.subscribed);
+    });
+  };
+
+  const deleteR = () => {
+    deleteResource(resource.resourceId, () => {
+      openNotification('success', 'Ștergere', 'Ați șters cu succes masa.');
+      getAllResources(data => dispatch(updateResources(data)));
+      getReservationsForUser(state.user.userId, data => {
+        dispatch(updateReservations(data));
+      });
     });
   };
 
@@ -222,6 +233,9 @@ const Card = props => {
                   >
                     {!subscribed ? 'Abonare' : 'Dezabonare'}
                   </CustomButton>
+                )}
+                {state.user && state.user.role === 'admin' && (
+                  <CustomButton onClick={deleteR}>Șterge</CustomButton>
                 )}
               </Horizontal>
             </Group>

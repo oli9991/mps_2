@@ -100,6 +100,11 @@ const getResource = (id, callback) =>
     .get(route(resource_routes.resource(id)))
     .then(({ data }) => callback && callback(data));
 
+const deleteResource = (id, callback) =>
+  axios
+    .delete(route(resource_routes.delResource(id)))
+    .then(({ data }) => callback && callback(data));
+
 const reserve = (resourceId, reason, start, end, callback) => {
   axios
     .post(route(resource_routes.add), { resourceId, reason, end, start })
@@ -162,6 +167,7 @@ export {
   getAllResources,
   getReservationsForUser,
   addResource,
+  deleteResource,
   reserve,
   cancelReservation,
   subscribe,
