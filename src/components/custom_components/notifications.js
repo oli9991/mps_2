@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import styled from 'styled-components';
 import _ from 'underscore';
@@ -13,49 +13,68 @@ const Notifications = props => {
   const { state } = useContext(Context);
   const [availableTables, setAvailable] = useState(0);
   const [availabilities, setAv] = useState([]);
-
   const [conclusions, setConclusions] = useState(new Map());
+
+  const calculateAvailabilty = useCallback(() => {
+    if (state.user) {
+      if (_.isEmpty(state.user.subscribed)) {
+        setAvailable(0);
+        return;
+      }
+      if (!_.isEmpty(state.user.subscribed)) {
+        if (!_.isEmpty(props.resources)) {
+          setAvailable(state.user.subscribed.length);
+          state.user.subscribed.forEach(id => {
+            props.resources.forEach(resource => {
+              if (resource.resourceId === id) {
+                if (!_.isEmpty(resource.reservations)) {
+                  resource.reservations.forEach(reservation => {
+                    if (
+                      moment(reservation.start).isBefore(moment()) &&
+                      moment().isAfter(moment(reservation.start)) &&
+                      moment(reservation.end).isAfter(moment())
+                    ) {
+                      setAvailable(a => (a = a - 1));
+                      setConclusions(conclusions =>
+                        conclusions.set(resource.resourceId, {
+                          ...resource,
+                          availability: false
+                        })
+                      );
+                    } else {
+                      setConclusions(conclusions =>
+                        conclusions.set(resource.resourceId, {
+                          ...resource,
+                          availability: true
+                        })
+                      );
+                    }
+                  });
+                } else if (resource.resourceId === id) {
+                  setConclusions(conclusions =>
+                    conclusions.set(resource.resourceId, {
+                      ...resource,
+                      availability: true
+                    })
+                  );
+                }
+              }
+            });
+          });
+        }
+      }
+    }
+
+    dispatch(setNotifications(availableTables));
+    conclusions.forEach(value => setAv(a => a.concat([value])));
+  }, [availableTables, conclusions, dispatch, props.resources, state.user]);
 
   useEffect(() => {
     setConclusions(new Map());
     setAv([]);
     setAvailable(0);
 
-    state.user &&
-      !_.isEmpty(state.user.subscribed) &&
-      state.user.subscribed.forEach(id => {
-        !_.isEmpty(props.resources) &&
-          props.resources.forEach(resource => {
-            resource.resourceId === id &&
-              !_.isEmpty(resource.reserved) &&
-              resource.reserved.forEach(reservation => {
-                setConclusions(
-                  conclusions.set(resource.resourceId, {
-                    ...resource,
-                    availability: true
-                  })
-                );
-                setAvailable(state.user.subscribed.length);
-
-                if (
-                  moment(reservation.start).isBefore(moment()) &&
-                  moment().isAfter(moment(reservation.start)) &&
-                  moment(reservation.end).isAfter(moment())
-                ) {
-                  setAvailable(a => (a = a - 1));
-                  setConclusions(
-                    conclusions.set(resource.resourceId, {
-                      ...resource,
-                      availability: false
-                    })
-                  );
-                }
-              });
-          });
-      });
-
-    dispatch(setNotifications(availableTables));
-    conclusions.forEach(value => setAv(a => a.concat([value])));
+    calculateAvailabilty();
     // eslint-disable-next-line
   }, [
     props.resources,

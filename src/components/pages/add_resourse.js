@@ -42,8 +42,12 @@ const AddResource = () => {
       return;
     }
     addResource(name, description, capacity, () =>
-      openNotification('warning', 'Adăugare', 'Masa a fost adăugată cu succes!')
+      openNotification('success', 'Adăugare', 'Masa a fost adăugată cu succes!')
     );
+
+    setName('');
+    setCapacity(0);
+    setDescription('');
   };
 
   return (
@@ -65,9 +69,14 @@ const AddResource = () => {
           />
           <CustomInput
             type='input'
+            pattern='[0-9]*'
             value={capacity}
             placeholder={'capacitate'}
-            onChange={event => setCapacity(extractValue(event))}
+            onChange={event =>
+              setCapacity(
+                event.target.validity.valid ? event.target.value : capacity
+              )
+            }
           />
         </form>
         <CustomButton onClick={addTable}>Adăugare</CustomButton>

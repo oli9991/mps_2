@@ -4,12 +4,17 @@ import Router from './components/router';
 import 'antd/dist/antd.css';
 import { interceptors } from './requests/interceptors';
 import Context, { actions, initialState, reducer } from './context/context';
-import { getAllResources, getUser } from './requests/function';
+import {
+  getAllReservations,
+  getAllResources,
+  getUser
+} from './requests/function';
 import { getToken } from './utils/localData';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import Notifications from './components/custom_components/notifications';
 import { updateResources } from './redux/resources';
+import { updateReservations } from './redux/reservations';
 
 function App() {
   interceptors.setupInterceptors();
@@ -20,6 +25,9 @@ function App() {
   useEffect(() => {
     getToken() && getUser(dispatch);
     getToken() && dispatch({ type: actions.login, payload: getToken() });
+    getToken() &&
+      getAllReservations(data => dispatchRedux(updateReservations(data)));
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

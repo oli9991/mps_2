@@ -19,7 +19,7 @@
 
   @include flex_center(column, center, center);
 
-  min-height: $min_page_h;
+  min-height: calc(#{$min_page_h} - #{$footer_height});
   width: 90%;
 
   form {

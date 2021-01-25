@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from '../layout/layout';
 import styles from '../../styling/pages/home.module.scss';
 import CustomButton from '../custom_components/button';
 import { Link } from 'react-router-dom';
+import Context from '../../context/context';
 
 const Home = () => {
   const [offset, setOffset] = useState(0);
+  const { state } = useContext(Context);
 
   const onScroll = () => {
     setOffset(window.pageYOffset);
@@ -25,7 +27,7 @@ const Home = () => {
             <br /> vă așteaptă!
           </div>
           {offset > window.innerHeight / 2 && (
-            <Link to='/tables'>
+            <Link to={state.token === null ? '/login' : '/tables'}>
               <CustomButton>Rezervă acum o masă </CustomButton>
             </Link>
           )}

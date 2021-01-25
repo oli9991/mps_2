@@ -23,11 +23,10 @@
   }
 
   .list {
-    width: 100%;
     @include flex_center(row, top, flex-start);
     flex-flow: row wrap;
     min-height: $min_page_h;
-    width: 90%;
+    width: 100%;
     // padding: 30px;
   }
 }

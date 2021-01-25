@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import _ from 'underscore';
 import { prettyDate } from '../../utils/utils';
 import moment from 'moment';
+import { fullName } from '../../utils/localData';
 
 const ReservationHistory = props => {
   const past =
@@ -36,11 +37,14 @@ const ReservationHistory = props => {
       {_.isEmpty(past) && <h4>Nu există înregistrări cu rezervări trecute.</h4>}
       {!_.isEmpty(past) &&
         past.map((reservation, id) => (
-          <p key={id}>
-            {prettyDate(reservation.start)},{' '}
-            {moment(reservation.start).format('HH:mm')} -{' '}
-            {moment(reservation.end).format('HH:mm')}
-          </p>
+          <>
+            <h3 style={{ opacity: 1 }}>{fullName(reservation.user)}</h3>
+            <p key={id}>
+              {prettyDate(reservation.start)},{' '}
+              {moment(reservation.start).format('HH:mm')} -{' '}
+              {moment(reservation.end).format('HH:mm')}
+            </p>
+          </>
         ))}
       {<h3>Rezervări curente</h3>}
       {_.isEmpty(current) && (
@@ -48,11 +52,14 @@ const ReservationHistory = props => {
       )}
       {!_.isEmpty(current) &&
         current.map((reservation, id) => (
-          <p key={id}>
-            {prettyDate(reservation.start)},{' '}
-            {moment(reservation.start).format('HH:mm')} -{' '}
-            {moment(reservation.end).format('HH:mm')}
-          </p>
+          <>
+            <h3 style={{ opacity: 1 }}>{fullName(reservation.user)}</h3>
+            <p key={id}>
+              {prettyDate(reservation.start)},{' '}
+              {moment(reservation.start).format('HH:mm')} -{' '}
+              {moment(reservation.end).format('HH:mm')}
+            </p>
+          </>
         ))}
       {<h3>Rezervări viitoare</h3>}
       {_.isEmpty(future) && (
@@ -60,11 +67,14 @@ const ReservationHistory = props => {
       )}
       {!_.isEmpty(future) &&
         future.map((reservation, id) => (
-          <p key={id}>
-            {prettyDate(reservation.start)},{' '}
-            {moment(reservation.start).format('HH:mm')} -{' '}
-            {moment(reservation.end).format('HH:mm')}
-          </p>
+          <>
+            <h3 style={{ opacity: 1 }}>{fullName(reservation.user)}</h3>
+            <p key={id}>
+              {prettyDate(reservation.start)},{' '}
+              {moment(reservation.start).format('HH:mm')} -{' '}
+              {moment(reservation.end).format('HH:mm')}
+            </p>
+          </>
         ))}
     </CustomModal>
   );

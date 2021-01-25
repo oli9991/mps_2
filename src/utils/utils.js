@@ -1,4 +1,8 @@
+import moment from 'moment';
+
 const checkIfOld = reservation => new Date(reservation.end) >= new Date();
+const transformSeconds = seconds =>
+  moment(seconds).utc().format('H [ore,] m [minute]');
 
 const prettyDate = date => {
   if (date) {
@@ -35,4 +39,10 @@ const calculateNotifications = () => null;
 
 const checkIfSubscribed = (id, list) => list && list.find(e => e === id);
 
-export { checkIfOld, prettyDate, calculateNotifications, checkIfSubscribed };
+export {
+  checkIfOld,
+  prettyDate,
+  calculateNotifications,
+  checkIfSubscribed,
+  transformSeconds
+};

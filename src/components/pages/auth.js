@@ -56,14 +56,20 @@ const Auth = props => {
       return;
     }
     setSubmitted(false);
-    login(email, password, dispatch, () => {
-      openNotification(
-        'success',
-        'Autentificare',
-        'Veți fi redirecționat către pagina principală!'
-      );
-      setSubmitted(true);
-    });
+    login(
+      email,
+      password,
+      dispatch,
+      () => {
+        openNotification(
+          'success',
+          'Autentificare',
+          'Veți fi redirecționat către pagina principală!'
+        );
+        setSubmitted(true);
+      },
+      () => setSubmitted(true)
+    );
   };
 
   const handleRegister = () => {
@@ -108,15 +114,23 @@ const Auth = props => {
       return;
     }
     setSubmitted(false);
-    register(email, firstName, lastName, password, role, () => {
-      openNotification(
-        'success',
-        'Înregistrare cu succes',
-        'Veți fi redirecționat către pagina de autentificare!'
-      );
-      setSubmitted(true);
-      props.history.push('/login');
-    });
+    register(
+      email,
+      firstName,
+      lastName,
+      password,
+      role,
+      () => {
+        openNotification(
+          'success',
+          'Înregistrare cu succes',
+          'Veți fi redirecționat către pagina de autentificare!'
+        );
+        setSubmitted(true);
+        props.history.push('/login');
+      },
+      () => setSubmitted(true)
+    );
   };
 
   if (!_.isNull(state.token)) {

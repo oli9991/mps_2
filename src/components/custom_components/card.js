@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import {
   getReservationsForUser,
@@ -12,15 +12,20 @@ import CustomButton from './button';
 import CustomInput from './input';
 import { openNotification } from './notification';
 import _ from 'underscore';
-import { Skeleton, DatePicker, TimePicker } from 'antd';
+import { Skeleton, DatePicker, TimePicker, Tooltip } from 'antd';
 import '../../styling/App.scss';
 import moment from 'moment';
 import ReservationHistory from './history';
 import { updateReservations } from '../../redux/reservations';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import Context from '../../context/context';
-import { calculateNotifications, checkIfSubscribed } from '../../utils/utils';
+import {
+  calculateNotifications,
+  checkIfSubscribed,
+  transformSeconds
+} from '../../utils/utils';
 import { updateResources } from '../../redux/resources';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const Card = props => {
   const resource = props;
@@ -29,6 +34,8 @@ const Card = props => {
   const [endHour, setEndHour] = useState(null);
   const [reason, setReason] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [availability, setAvailable] = useState(true);
+  const [currentReservation, setReservation] = useState(true);
 
   const { state, dispatch: dispatchContext } = useContext(Context);
   const dispatch = useDispatch();
@@ -63,6 +70,7 @@ const Card = props => {
       getReservationsForUser(state.user.userId, data => {
         dispatch(updateReservations(data));
       });
+      calcultateAvailability();
       setReason('');
       setDay(null);
       setStartHour(null);
@@ -94,10 +102,38 @@ const Card = props => {
     });
   };
 
+  const calcultateAvailability = useCallback(() => {
+    if (_.isEmpty(props.reservations)) {
+      setAvailable(true);
+      return;
+    }
+    if (!_.isEmpty(props.reservations)) {
+      props.reservations.forEach(reservation => {
+        if (
+          reservation.resourceId === props.resourceId &&
+          moment(reservation.start).isBefore(moment()) &&
+          moment().isAfter(moment(reservation.start)) &&
+          moment(reservation.end).isAfter(moment())
+        ) {
+          setAvailable(false);
+          setReservation(reservation);
+          return;
+        }
+      });
+      return;
+    }
+    // eslint-disable-next-line
+  }, [props.reservations]);
+
+  useEffect(() => {
+    calcultateAvailability();
+    // eslint-disable-next-line
+  }, [props.reservations]);
+
   return (
     <Container>
       <ReservationHistory
-        history={props.reserved}
+        history={props.reservations}
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
       />
@@ -145,12 +181,34 @@ const Card = props => {
         <>
           <Vertical>
             <Group>
+              <p>Nume</p>
+              <p>{resource && resource.name}</p>
+            </Group>
+            <Group>
               <p>Capacitate</p>
               <p>{resource && resource.capacity}</p>
             </Group>
             <Group>
               <p>Descriere</p>
               <p>{resource && resource.description}</p>
+            </Group>
+            <Group>
+              <p>Stare</p>
+              <p>
+                {availability === true ? 'Liberă' : 'Rezervată'}{' '}
+                {availability === false && (
+                  <Tooltip
+                    placement='right'
+                    title={`Rezervată de ${transformSeconds(
+                      moment().diff(moment(currentReservation.start))
+                    )}, mai dureaza ${transformSeconds(
+                      moment(currentReservation.end).diff(moment())
+                    )}`}
+                  >
+                    <InfoCircleOutlined style={{ verticalAlign: '-3px' }} />
+                  </Tooltip>
+                )}
+              </p>
             </Group>
 
             <Group>
@@ -181,12 +239,12 @@ const Card = props => {
                   <TimePicker
                     value={startHour}
                     onChange={value => setStartHour(value)}
-                    placeholder='Alege ora inceput'
+                    placeholder='Alege oră început'
                   />
                   <TimePicker
                     value={endHour}
                     onChange={value => setEndHour(value)}
-                    placeholder='Alege ora sfarsit '
+                    placeholder='Alege oră sfârșit'
                   />
                   <CustomInput
                     type='input'
@@ -209,30 +267,50 @@ const Card = props => {
   );
 };
 
-export default Card;
+const mapStateToProps = store => ({
+  reservations: store.reservations
+});
+export default connect(mapStateToProps)(Card);
 
 const Container = styled.div`
-  width: 30%;
+  width: 25%;
+  padding: 10px;
+  margin-right: 7.5%;
+  margin-bottom: 4%;
+  margin-top: 20px;
 
-  @media (max-width: 700px) {
+  @media (max-width: 1300px) {
+    width: 30%;
+    margin-right: 15%;
+  }
+
+  @media (max-width: 1000px) {
+    width: 60%;
+    margin-right: 10%;
+  }
+
+  @media (max-width: 900px) {
     width: 60%;
   }
-  @media (max-width: 900px) {
-    width: 40%;
+
+  @media (max-width: 400px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 120%;
+    display: flex;
+    flex-direction: column;
   }
 
   border: none;
   outline: none;
   box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
-  max-height: 250px;
-  min-height: 175px;
+  height: 350px;
+  // min-height: 175px;
 
   background-color: rgba(93.3%, 93.3%, 93.3%, 0.25);
   color: $2c2c2c;
 
   border-radius: 10px;
-  padding: 10px;
-  margin-right: 70px;
 
   font-weight: normal;
 
@@ -281,6 +359,7 @@ const Group = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 4px;
+    margin-right: 10px;
   }
   padding: 4px;
 `;
@@ -295,10 +374,14 @@ const OuterContainer = styled.div`
   align-items: center;
   flex-direction: column;
 
-  height: 120%;
-  top: -10%;
-  right: -10%;
+  height: 110%;
+  top: -5%;
   position: relative;
+
+  @media (max-width: 400px) {
+    height: 120%;
+    top: 2%;
+  }
 
   background-color: #eeeeee;
   color: #2c2c2c;

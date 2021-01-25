@@ -28,15 +28,24 @@ const getUser = dispatch =>
     })
     .catch(() => error());
 
-const login = (email, password, dispatch, callback = null) => {
-  callback && callback();
+const login = (
+  email,
+  password,
+  dispatch,
+  callback = null,
+  escapeLoading = null
+) => {
   axios
     .post(route(auth_routes.login), { email, password })
     .then(({ data }) => {
+      callback && callback();
       dispatch({ type: actions.login, payload: data });
       getUser(dispatch);
     })
-    .catch(() => error());
+    .catch(err => {
+      escapeLoading && escapeLoading();
+      error();
+    });
 };
 
 const register = (
@@ -45,7 +54,8 @@ const register = (
   lastName,
   password,
   role,
-  callback = null
+  callback = null,
+  escapeLoading = null
 ) => {
   axios
     .post(route(auth_routes.register), {
@@ -55,26 +65,35 @@ const register = (
       password,
       role
     })
-    .then(() => callback && callback())
-    .catch(() => error());
+    .then(() => {
+      callback && callback();
+    })
+    .catch(() => {
+      error();
+      escapeLoading && escapeLoading();
+    });
 };
 
 /** reservations and resources related routes **/
 const getAllReservations = callback =>
-  axios.get(route(resource_routes.all)).then(({ data }) => callback(data));
+  axios
+    .get(route(resource_routes.all))
+    .then(({ data }) => callback && callback(data));
 
 const getAllResources = callback =>
   axios
     .get(route(resource_routes.getResources))
-    .then(({ data }) => callback(data));
+    .then(({ data }) => callback && callback(data));
 
 const getReservation = (id, callback) =>
-  axios.get(route(resource_routes.byId(id))).then(({ data }) => callback(data));
+  axios
+    .get(route(resource_routes.byId(id)))
+    .then(({ data }) => callback && callback(data));
 
 const getReservationsForUser = (id, callback) =>
   axios
     .get(route(resource_routes.forUser(id)))
-    .then(({ data }) => callback(data));
+    .then(({ data }) => callback && callback(data));
 
 const getResource = (id, callback) =>
   axios
@@ -99,7 +118,7 @@ const reserve = (resourceId, reason, start, end, callback) => {
 // };
 const addResource = (name, description, capacity, callback) => {
   axios
-    .post(route(resource_routes.add), { name, description, capacity })
+    .post(route(resource_routes.addResource), { name, description, capacity })
     .then(() => {
       getAllResources();
       callback && callback();

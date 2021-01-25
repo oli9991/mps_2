@@ -38,14 +38,16 @@ const SelfReservations = props => {
             rezervare, mergeți la pagina <b>Mese</b> 😃.
           </h3>
         )}
-        {!_.isEmpty(sorted) &&
-          sorted.map(reservation => (
-            <ReservationCard
-              key={reservation.reservationId}
-              {...reservation}
-              readOnly
-            />
-          ))}
+        <div className={styles.list}>
+          {!_.isEmpty(sorted) &&
+            sorted.map(reservation => (
+              <ReservationCard
+                key={reservation.reservationId}
+                {...reservation}
+                readOnly
+              />
+            ))}
+        </div>
       </div>
     </Layout>
   );
